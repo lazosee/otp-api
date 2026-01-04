@@ -156,6 +156,8 @@
 				const email = generateOtpEmail.value
 				const ttl = parseInt(generateOtpTtl.value) || 300
 
+				console.log({ email, ttl })
+
 				const response = await fetch('/api/generate-otp', {
 					method: 'POST',
 					headers: {
@@ -170,8 +172,10 @@
 			verifyOtpButton.onclick = async function verifyOtp() {
 				verifyOtpResult.innerText = 'Loading...'
 
-				const email = generateOtpEmail.value
-				const code = verifyOtpCode.value
+				const email = generateOtpEmail.value.trim()
+				const code = verifyOtpCode.value.toString().trim()
+
+				console.log({ email, code })
 
 				const response = await fetch('/api/verify-otp', {
 					method: 'POST',
