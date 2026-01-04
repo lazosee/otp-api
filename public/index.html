@@ -12,7 +12,7 @@
 		></script>
 	</head>
 	<body class="w-full min-h-screen p-2 block content-center-safe justify-items-center-safe">
-		<h1 class="text-zinc-800 text-3xl font-semibold">Welcome to the OTP API</h1>
+		<h1 class="block py-4 text-zinc-800 text-3xl font-semibold">Welcome to the OTP API</h1>
 		<section class="block min-w-9/10 max-w-[max(100%, 80ch)] m-2 p-2">
 			<hr class="w-full my-4 border-zinc-200" />
 			<h2 class="text-zinc-800 text-2xl font-light">API Playground</h2>
@@ -156,7 +156,6 @@
 			const routeSpans = document.querySelectorAll('.route')
 			routeSpans.forEach((span) => {
 				span.innerText = window.location.origin
-				console.log(span)
 			})
 
 			generateOtpButton.onclick = async function fetchOtp() {
@@ -164,8 +163,6 @@
 
 				const email = document.getElementById('generateOtpEmail').value
 				const ttl = parseInt(document.getElementById('generateOtpTtl').value) || 300
-
-				console.log({ email, ttl })
 
 				const response = await fetch('/api/generate-otp', {
 					method: 'POST',
@@ -183,8 +180,6 @@
 
 				const email = document.getElementById('generateOtpEmail').value
 				const code = document.getElementById('verifyOtpCode').value
-
-				console.log({ email, code })
 
 				const response = await fetch('/api/verify-otp', {
 					method: 'POST',
