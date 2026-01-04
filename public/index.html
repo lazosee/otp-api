@@ -159,7 +159,7 @@
 			generateOtpButton.onclick = async function fetchOtp() {
 				generateOtpResult.innerText = 'Loading...'
 
-				const email = document.getElementById('generateOtpEmail').value.trim()
+				const email = document.getElementById('generateOtpEmail').value
 				const ttl = parseInt(document.getElementById('generateOtpTtl').value) || 300
 
 				console.log({ email, ttl })
@@ -178,7 +178,7 @@
 			verifyOtpButton.onclick = async function verifyOtp() {
 				verifyOtpResult.innerText = 'Loading...'
 
-				const email = document.getElementById('generateOtpEmail').value.trim()
+				const email = document.getElementById('generateOtpEmail').value
 				const code = document.getElementById('verifyOtpCode').value.toString().trim()
 
 				console.log({ email, code })
