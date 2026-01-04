@@ -191,7 +191,7 @@
 					headers: {
 						'Content-Type': 'application/json',
 					},
-					body: JSON.stringify({ email, code }),
+					body: JSON.stringify({ email, otp: code }),
 				})
 				const data = await response.json()
 				document.getElementById('verifyOtpResult').innerText = JSON.stringify(data, null, 2)
