@@ -159,8 +159,8 @@
 			generateOtpButton.onclick = async function fetchOtp() {
 				generateOtpResult.innerText = 'Loading...'
 
-				const email = generateOtpEmail.value.trim()
-				const ttl = parseInt(generateOtpTtl.value) || 300
+				const email = document.getElementById('generateOtpEmail').value.trim()
+				const ttl = parseInt(document.getElementById('generateOtpTtl').value) || 300
 
 				console.log({ email, ttl })
 
@@ -172,14 +172,14 @@
 					body: JSON.stringify({ email, ttl }),
 				})
 				const data = await response.json()
-				generateOtpResult.innerText = JSON.stringify(data, null, 2)
+				document.getElementById('generateOtpResult').innerText = JSON.stringify(data, null, 2)
 			}
 
 			verifyOtpButton.onclick = async function verifyOtp() {
 				verifyOtpResult.innerText = 'Loading...'
 
-				const email = generateOtpEmail.value.trim()
-				const code = verifyOtpCode.value.toString().trim()
+				const email = document.getElementById('generateOtpEmail').value.trim()
+				const code = document.getElementById('verifyOtpCode').value.toString().trim()
 
 				console.log({ email, code })
 
@@ -191,7 +191,7 @@
 					body: JSON.stringify({ email, code }),
 				})
 				const data = await response.json()
-				verifyOtpResult.innerText = JSON.stringify(data, null, 2)
+				document.getElementById('verifyOtpResult').innerText = JSON.stringify(data, null, 2)
 			}
 		</script>
 	</body>
