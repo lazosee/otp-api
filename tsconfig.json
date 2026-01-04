@@ -1,0 +1,37 @@
+{
+	"compilerOptions": {
+		/* Compatibility Fixes */
+		"allowImportingTsExtensions": false, // MUST be false for tsc builds
+		"declaration": true, // Generates corresponding '.d.ts' file
+		/* Required for NodeNext/ESM builds */
+		// "declarationDir": "./dist/types",
+		"declarationMap": true, // Generates a sourcemap for internal types (helps IDE navigation)
+		"emitDeclarationOnly": false, // Set to 'true' if you ONLY want types and no .js files
+		"forceConsistentCasingInFileNames": true,
+		"jsx": "react-jsx",
+		/* Modern Features */
+		"lib": ["ES2022"], // Removed DOM/DOM.Iterable as Hono is typically Server-side
+		"module": "NodeNext",
+		"moduleDetection": "force",
+		"moduleResolution": "NodeNext",
+		"noEmit": false, // Required to actually generate files
+		"noFallthroughCasesInSwitch": true,
+		"noUncheckedSideEffectImports": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"outDir": "./dist",
+		"removeComments": true,
+		"rootDir": "./src",
+		"skipLibCheck": true,
+		"sourceMap": true, // Recommended for debugging production code
+		/* Strictness & Reliability */
+		"strict": true,
+		/* Build Settings */
+		"target": "ES2022",
+		"types": ["node"],
+		"useDefineForClassFields": true,
+		"verbatimModuleSyntax": true /* Typing Emission */
+	},
+	"exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.http"],
+	"include": ["src/**/*.ts"]
+}
