@@ -16,7 +16,9 @@ const app = new Hono()
 app.use(etag(), logger(), prettyJSON(), cors({ origin: '*' }))
 app.use('/api/*', disableSSG())
 
-// app.get('/', async (c) => {})
+app.get('/', async (c) => {
+	return c.redirect('/index.html')
+})
 
 app.post('/api/generate-otp', async (c) => {
 	const { email, ttl }: SetOtpRequest = await c.req.json()
