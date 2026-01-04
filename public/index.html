@@ -28,7 +28,7 @@
 						>method: POST</span
 					>
 					<span class="p-1 px-2 text-lg font-normal text-zinc-800 bg-slate-200 rounded-md mr-2"
-						>route: /api/generate-otp</span
+						>route: <span class="route"></span>/api/generate-otp</span
 					>
 					<button
 						type="button"
@@ -95,7 +95,7 @@
 						>method: POST</span
 					>
 					<span class="p-1 px-2 text-lg font-normal text-zinc-800 bg-slate-200 rounded-md mr-2"
-						>route: /api/verify-otp</span
+						>route: <span class="route"></span>/api/verify-otp</span
 					>
 					<button
 						type="button"
@@ -150,10 +150,16 @@
 			</div>
 		</section>
 		<script>
+			const routeSpans = document.querySelectorAll('.route')
+			routeSpans.forEach((span) => {
+				span.innerText = window.location.origin
+				console.log(span)
+			})
+
 			generateOtpButton.onclick = async function fetchOtp() {
 				generateOtpResult.innerText = 'Loading...'
 
-				const email = generateOtpEmail.value
+				const email = generateOtpEmail.value.trim()
 				const ttl = parseInt(generateOtpTtl.value) || 300
 
 				console.log({ email, ttl })
