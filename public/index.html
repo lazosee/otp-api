@@ -17,7 +17,12 @@
 			<hr class="w-full my-4 border-zinc-200" />
 			<h2 class="text-zinc-800 text-2xl font-light">API Playground</h2>
 
-			<div class="">
+			<div class="my-2 block p-2 border border-zinc-200 rounded-md bg-zinc-50 shadow-sm">
+				<p
+					class="block py-2 underline decoration-wavy decoration-zinc-300 underline-offset-2 text-xl font-normal text-zinc-800"
+				>
+					1. Generate OTP
+				</p>
 				<div class="flex w-full py-2">
 					<span class="p-1 px-2 text-lg font-normal text-zinc-800 bg-slate-200 rounded-md mr-2"
 						>method: POST</span
@@ -41,7 +46,7 @@
 						id="generateOtpEmail"
 						class="block w-full p-2 bg-zinc-100 rounded-md text-zinc-800 border border-zinc-200"
 						placeholder="User email address"
-						value=""
+						value="tester@email.com"
 					/>
 				</div>
 				<div class="w-full block">
@@ -64,13 +69,72 @@
 						name=""
 						id="generateOtpResult"
 						class="block w-full p-2 bg-zinc-100 rounded-md text-zinc-800 font-mono border border-zinc-200 min-h-[200px] resize-y"
+						readonly
+						aria-readonly="true"
+					></textarea>
+				</div>
+			</div>
+
+			<div class="my-2 block p-2 border border-zinc-200 rounded-md bg-zinc-50 shadow-sm">
+				<p
+					class="block py-2 underline decoration-wavy decoration-zinc-300 underline-offset-2 text-xl font-normal text-zinc-800"
+				>
+					2. Verify OTP
+				</p>
+				<div class="flex w-full py-2">
+					<span class="p-1 px-2 text-lg font-normal text-zinc-800 bg-slate-200 rounded-md mr-2"
+						>method: POST</span
+					>
+					<span class="p-1 px-2 text-lg font-normal text-zinc-800 bg-slate-200 rounded-md mr-2"
+						>route: /api/verify-otp</span
+					>
+					<button
+						type="button"
+						id="verifyOtpButton"
+						onclick="verifyOtp"
+						class="p-1 px-2 text-lg font-normal text-zinc-800 bg-blue-400 rounded-md mr-2"
+					>
+						fetch
+					</button>
+				</div>
+				<div class="w-full block">
+					<label for="generateOtpEmail" class="block text-zinc-700 font-medium mb-1">Email: </label>
+					<input
+						type="email"
+						id="generateOtpEmail"
+						class="block w-full p-2 bg-zinc-100 rounded-md text-zinc-800 border border-zinc-200"
+						placeholder="User email address"
+						value="tester@email.com"
+					/>
+				</div>
+				<div class="w-full block">
+					<label for="verifyOtpCode" class="block text-zinc-700 font-medium mb-1">OTP Code: </label>
+					<input
+						type="number"
+						id="verifyOtpCode"
+						class="block w-full p-2 bg-zinc-100 rounded-md text-zinc-800 border border-zinc-200"
+						placeholder="123456"
+						value=""
+					/>
+				</div>
+				<div class="w-full block">
+					<label for="generateOtpResult" class="block text-zinc-700 font-medium mb-1"
+						>Response:
+					</label>
+					<textarea
+						name=""
+						id="generateOtpResult"
+						class="block w-full p-2 bg-zinc-100 rounded-md text-zinc-800 font-mono border border-zinc-200 min-h-[200px] resize-y"
+						readonly
+						aria-readonly="true"
 					></textarea>
 				</div>
 			</div>
 		</section>
 		<script>
 			generateOtpButton.onclick = async function fetchOtp() {
-				console.log('fetchOtp called')
+				generateOtpResult.innerText = 'Loading...'
+
 				const email = generateOtpEmail.value
 				const ttl = parseInt(generateOtpTtl.value) || 300
 
@@ -83,6 +147,23 @@
 				})
 				const data = await response.json()
 				generateOtpResult.innerText = JSON.stringify(data, null, 2)
+			}
+
+			verifyOtpButton.onclick = async function verifyOtp() {
+				verifyOtpResult.innerText = 'Loading...'
+
+				const email = generateOtpEmail.value
+				const code = verifyOtpCode.value
+
+				const response = await fetch('/api/verify-otp', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify({ email, code }),
+				})
+				const data = await response.json()
+				verifyOtpResult.innerText = JSON.stringify(data, null, 2)
 			}
 		</script>
 	</body>
