@@ -4,8 +4,84 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>OTP API</title>
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss-browser/4.1.13/index.global.min.js"
+			integrity="sha512-TscjjxDy2iXx5s55Ar78c01JDHUug0K5aw4YKId9Yuocjx3ueX/X9PFyH5XNRVWqagx3TtcQWQVBaHAIPFjiFA=="
+			crossorigin="anonymous"
+			referrerpolicy="no-referrer"
+		></script>
 	</head>
-	<body>
-		<h1>Welcome to the OTP API</h1>
+	<body class="w-full min-h-screen p-2 block content-center-safe justify-items-center-safe">
+		<h1 class="text-zinc-800 text-3xl font-semibold">Welcome to the OTP API</h1>
+		<section class="block min-w-9/10 max-w-[max(100%, 80ch)] m-2 p-2">
+			<hr class="w-full my-4 border-zinc-200" />
+			<h2 class="text-zinc-800 text-2xl font-light">API Playground</h2>
+
+			<div class="">
+				<div class="flex w-full py-2">
+					<span class="p-1 px-2 text-lg font-normal text-zinc-800 bg-slate-200 rounded-md mr-2"
+						>method: POST</span
+					>
+					<span class="p-1 px-2 text-lg font-normal text-zinc-800 bg-slate-200 rounded-md mr-2"
+						>route: /api/generate-otp</span
+					>
+					<button
+						onclick="fetchOtp"
+						class="p-1 px-2 text-lg font-normal text-zinc-800 bg-blue-400 rounded-md mr-2"
+					>
+						fetch
+					</button>
+				</div>
+				<div class="w-full block">
+					<label for="generateOtpEmail" class="block text-zinc-700 font-medium mb-1">Email: </label>
+					<input
+						type="email"
+						id="generateOtpEmail"
+						class="block w-full p-2 bg-zinc-100 rounded-md text-zinc-800 border border-zinc-200"
+						placeholder="User email address"
+						value=""
+					/>
+				</div>
+				<div class="w-full block">
+					<label for="generateOtpTtl" class="block text-zinc-700 font-medium mb-1"
+						>TTL (seconds):
+					</label>
+					<input
+						type="number"
+						id="generateOtpTtl"
+						class="block w-full p-2 bg-zinc-100 rounded-md text-zinc-800 border border-zinc-200"
+						placeholder="300"
+						value="300"
+					/>
+				</div>
+				<div class="w-full block">
+					<label for="generateOtpResult" class="block text-zinc-700 font-medium mb-1"
+						>Response:
+					</label>
+					<textarea
+						name=""
+						id="generateOtpResult"
+						class="block w-full p-2 bg-zinc-100 rounded-md text-zinc-800 font-mono border border-zinc-200 min-h-[200px] resize-y"
+					></textarea>
+				</div>
+			</div>
+		</section>
+		<script>
+			async function fetchOtp() {
+				console.log('fetchOtp called')
+				const email = generateOtpEmail.value
+				const ttl = parseInt(generateOtpTtl.value) || 300
+
+				const response = await fetch('/api/generate-otp', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify({ email, ttl }),
+				})
+				const data = await response.json()
+				generateOtpResult.innerText = JSON.stringify(data, null, 2)
+			}
+		</script>
 	</body>
 </html>
