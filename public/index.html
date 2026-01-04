@@ -26,6 +26,8 @@
 						>route: /api/generate-otp</span
 					>
 					<button
+						type="button"
+						id="generateOtpButton"
 						onclick="fetchOtp"
 						class="p-1 px-2 text-lg font-normal text-zinc-800 bg-blue-400 rounded-md mr-2"
 					>
@@ -67,7 +69,7 @@
 			</div>
 		</section>
 		<script>
-			async function fetchOtp() {
+			generateOtpButton.onclick = async function fetchOtp() {
 				console.log('fetchOtp called')
 				const email = generateOtpEmail.value
 				const ttl = parseInt(generateOtpTtl.value) || 300
