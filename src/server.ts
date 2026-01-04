@@ -2,6 +2,9 @@ import { Hono } from 'hono'
 import { cors } from 'hono/cors'
 import { etag } from 'hono/etag'
 import { logger } from 'hono/logger'
+import { prettyJSON } from 'hono/pretty-json'
+import { disableSSG } from 'hono/ssg'
+import { handle } from 'hono/vercel'
 import { OtpEmail } from './email/OtpEmail.js'
 import { generateOTP } from './lib/otp.js'
 import { deleteOtp, getOtp, setOtp } from './lib/redis.js'
@@ -10,9 +13,12 @@ import type { CheckOtpRequest, SetOtpRequest } from './types.js'
 
 const app = new Hono()
 
-app.use(etag(), logger(), cors({ origin: '*' }))
+app.use(etag(), logger(), prettyJSON(), cors({ origin: '*' }))
+app.use('/api/*', disableSSG())
 
-app.post('/set-otp', async (c) => {
+app.get('/', async (c) => {})
+
+app.post('/api/generate-otp', async (c) => {
 	const { email, ttl }: SetOtpRequest = await c.req.json()
 
 	// Generate OTP and store it in Redis with a TTL of 5 minutes
@@ -20,17 +26,20 @@ app.post('/set-otp', async (c) => {
 	await setOtp(email, otp, ttl ?? 300)
 
 	// Send via Resend
-	await resend.emails.send({
+	const { data, error } = await resend.emails.send({
 		from: 'Lazaro Osee <otp@lazaroosee.xyz>',
 		to: email,
 		subject: 'Your OTP Verification Code',
 		react: OtpEmail({ otp, email, ttl }), // Your React Email template
 	})
 
-	return c.json({ otp, email })
+	// Return the OTP in the response (for testing purposes; remove in production)
+	if (error) return c.json({ otp, email, mailed: false, error })
+
+	return c.json({ otp, email, mailed: true, 'mail-response': data })
 })
 
-app.post('/check-otp', async (c) => {
+app.post('/api/verify-otp', async (c) => {
 	const { email, otp }: CheckOtpRequest = await c.req.json()
 
 	// Retrieve the stored OTP from Redis
@@ -52,4 +61,6 @@ app.post('/check-otp', async (c) => {
 	}
 })
 
+export const GET = handle(app)
+export const POST = handle(app)
 export default app

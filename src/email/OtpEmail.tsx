@@ -24,7 +24,7 @@ export const OtpEmail = ({ otp, email, ttl }: OtpEmailProps) => {
 	return (
 		<Html>
 			<Head />
-			<Preview>Your one-time secure access code (OTP)</Preview>
+			<Preview>{otp}. Your one-time secure access code (OTP)</Preview>
 			<Tailwind>
 				<Body className="bg-white font-sans">
 					<Container className="mx-auto py-12 px-4 max-w-[465px] border border-slate-100 shadow-sm">
