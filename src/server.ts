@@ -35,15 +35,16 @@ app.post('/api/generate-otp', async (c) => {
 })
 
 app.post('/api/send-otp-email', async (c) => {
-	const { email, ttl, appname }: SetOtpRequest = await c.req.json()
+	const { email, ttl, appname: title }: SetOtpRequest = await c.req.json()
 
 	// Generate OTP and store it in Redis with a TTL of 5 minutes
 	const otp = generateOTP()
+	const appname = title && title.trim() !== '' ? title : 'Open OTP'
 	await setOtp(email, otp, ttl ?? 300)
 
 	// Send via Resend
 	const { data, error } = await resend.emails.send({
-		from: `${appname ?? 'Lazaro Osee'} <otp@lazaroosee.xyz>`,
+		from: `${appname} <otp@lazaroosee.xyz>`,
 		to: email,
 		subject: 'Your OTP Verification Code',
 		react: OtpEmail({ otp, email, ttl, appname }), // Your React Email template
