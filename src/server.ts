@@ -43,7 +43,7 @@ app.post('/api/send-otp-email', async (c) => {
 
 	// Send via Resend
 	const { data, error } = await resend.emails.send({
-		from: 'Lazaro Osee <otp@lazaroosee.xyz>',
+		from: `${appname ?? 'Lazaro Osee'} <otp@lazaroosee.xyz>`,
 		to: email,
 		subject: 'Your OTP Verification Code',
 		react: OtpEmail({ otp, email, ttl, appname }), // Your React Email template
