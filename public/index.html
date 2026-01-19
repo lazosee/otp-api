@@ -259,6 +259,7 @@
 				sendEmailResult.innerText = 'Loading...'
 
 				const email = document.getElementById('sendEmailEmail').value
+				const appname = document.getElementById('sendEmailAppname').value
 				const ttl = parseInt(document.getElementById('sendEmailTtl').value) || 300
 
 				const response = await fetch('/api/send-otp-email', {
@@ -266,7 +267,7 @@
 					headers: {
 						'Content-Type': 'application/json',
 					},
-					body: JSON.stringify({ email, ttl }),
+					body: JSON.stringify({ email, ttl, appname }),
 				})
 				const data = await response.json()
 				document.getElementById('sendEmailResult').innerText = JSON.stringify(data, null, 2)
