@@ -25,6 +25,20 @@ app.post('/api/generate-otp', async (c) => {
 
 	// Generate OTP and store it in Redis with a TTL of 5 minutes
 	const otp = generateOTP()
+	try {
+		const res = await setOtp(email, otp, ttl ?? 300)
+		if (!res) return c.json({ error: 'Failed to create OTP' }, 500)
+	} catch (e) {
+		return c.json({ error: e }, 500)
+	}
+	return c.json({ otp }, 200)
+})
+
+app.post('/api/send-otp-email', async (c) => {
+	const { email, ttl, appname }: SetOtpRequest = await c.req.json()
+
+	// Generate OTP and store it in Redis with a TTL of 5 minutes
+	const otp = generateOTP()
 	await setOtp(email, otp, ttl ?? 300)
 
 	// Send via Resend
@@ -32,13 +46,13 @@ app.post('/api/generate-otp', async (c) => {
 		from: 'Lazaro Osee <otp@lazaroosee.xyz>',
 		to: email,
 		subject: 'Your OTP Verification Code',
-		react: OtpEmail({ otp, email, ttl }), // Your React Email template
+		react: OtpEmail({ otp, email, ttl, appname }), // Your React Email template
 	})
 
 	// Return the OTP in the response (for testing purposes; remove in production)
-	if (error) return c.json({ otp, email, mailed: false, error })
+	if (error) return c.json({ mailed: false, error }, 500)
 
-	return c.json({ otp, email, mailed: true, 'mail-response': data })
+	return c.json({ mailed: true, 'mail-response': data }, 201)
 })
 
 app.post('/api/verify-otp', async (c) => {

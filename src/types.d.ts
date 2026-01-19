@@ -9,6 +9,6 @@ export type OtpCheckResponse = {
 	message: string
 }
 
-export type SetOtpRequest = Omit<OtpData, 'ttl' | 'otp'> & { ttl?: number }
+export type SetOtpRequest = Omit<OtpData, 'ttl' | 'otp'> & { ttl?: number; appname?: string }
 
 export type CheckOtpRequest = Omit<OtpData, 'ttl'>
