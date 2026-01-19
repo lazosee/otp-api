@@ -19,12 +19,7 @@ export interface OtpEmailProps {
 	appname?: string
 }
 
-export const OtpEmail = ({
-	otp,
-	email,
-	ttl,
-	appname = 'Open Security Protocol',
-}: OtpEmailProps) => {
+export const OtpEmail = ({ otp, email, ttl, appname = 'Open OTP' }: OtpEmailProps) => {
 	const { expiresIn } = { expiresIn: ttl ? `${(ttl / 60).toFixed(0)} minutes` : '5 minutes' }
 
 	return (
@@ -35,7 +30,7 @@ export const OtpEmail = ({
 				<Body className="bg-white font-sans">
 					<Container className="mx-auto py-12 px-4 max-w-[465px] border border-slate-100 shadow-sm">
 						<Heading className="text-zinc-400 text-xs uppercase tracking-[0.2em] font-light">
-							{appname}
+							{appname} - Security Protocol
 						</Heading>
 						<Text className="text-zinc-800 text-xl leading-relaxed font-serif italic my-6">
 							"Identity is the threshold through which we enter the workspace."
